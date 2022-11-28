@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+  labels:
+    package-instance: hello-world
+  namespace: example
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      package-instance: hello-world
+  template:
+    metadata:
+      labels:
+        package-instance: hello-world
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+      - name: hello-world
+        image: hello-world:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 10000
+
